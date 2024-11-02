@@ -7,10 +7,8 @@ dotenv.config();
 const currPath = path.resolve();
 const app = express();
 
-//  app.use(express.json());
-console.log(process.env.NODE_ENV, "    isprod");
-console.log(path.resolve(currPath, "frontend", "dist", "index.html"),"path")
-
+app.use(express.json());
+console.log(process.env);
 
 app.get("/api/products", async (req, res) => {
   try {
@@ -37,12 +35,14 @@ app.post("/api/products", async (req, res) => {
   }
 });
 
-if (true) {
-  console.log("eny")
-app.use(express.static(path.join(currPath, "/frontend/dist")));
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(currPath, "frontend", "dist", "index.html"),{"Content-Type":"text/html"});
-});
+if (process.env.NODE_ENV === "production") {
+  console.log("eny");
+  app.use(express.static(path.join(currPath, "/frontend/dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(currPath, "frontend", "dist", "index.html"), {
+      "Content-Type": "text/html",
+    });
+  });
 }
 
 app.listen(5000, () => {
