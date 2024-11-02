@@ -6,14 +6,8 @@ import Product from "./model/product.model.js";
 dotenv.config();
 const currPath = path.resolve();
 const app = express();
-if (process.env.NODE_ENV == "production") {
-    console.log("eny")
-  app.use(express.static(path.join(currPath, "/frontend/dist")));
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(currPath, "frontend", "dist", "index.html"),{contentType:"text/html"});
-  });
- }
-app.use(express.json());
+
+//  app.use(express.json());
 console.log(process.env.NODE_ENV, "    isprod");
 console.log(path.resolve(currPath, "frontend", "dist", "index.html"),"path")
 
@@ -42,6 +36,14 @@ app.post("/api/products", async (req, res) => {
     res.status(500).json({ success: false, message: "server Error" });
   }
 });
+
+if (true) {
+  console.log("eny")
+app.use(express.static(path.join(currPath, "/frontend/dist")));
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(currPath, "frontend", "dist", "index.html"),{"Content-Type":"text/html"});
+});
+}
 
 app.listen(5000, () => {
   conncetDB();
